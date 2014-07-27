@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Don't ignore directories
+!*/
+
+# Except for these...
+!.gitignore
+!*.rs
+!README.md
+!makefile
