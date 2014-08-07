@@ -47,9 +47,9 @@ impl Color {
 
     /// Return a highlighted version of the current Color.
     pub fn highlighted(&self) -> Color {
-        let r = clampf32((1f32 - self.r) * 0.5f32 + self.r);
-        let g = clampf32((1f32 - self.g) * 0.1f32 + self.g);
-        let b = clampf32((1f32 - self.b) * 0.1f32 + self.b);
+        let r = clampf32((1f32 - self.r) * 0.5f32 * self.r + self.r);
+        let g = clampf32((1f32 - self.g) * 0.1f32 * self.g + self.g);
+        let b = clampf32((1f32 - self.b) * 0.1f32 * self.b + self.b);
         let a = clampf32((1f32 - self.a) * 0.5f32 + self.a);
         Color::new(r, g, b, a)
     }

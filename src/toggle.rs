@@ -1,7 +1,7 @@
 //!
-//!  button.rs
+//!  toggle.rs
 //!
-//!  Created by Mitchell Nordine at 05:50PM on July 27, 2014.
+//!  Created by Mitchell Nordine at 12:59AM on August 08, 2014.
 //!
 //!
 
@@ -24,36 +24,51 @@ use rectangle::Rectangle;
 
 /// Button type widget.
 #[deriving(Show, Clone)]
-pub struct Button {
+pub struct Toggle {
     widget_data: widget::Data,
     rect: Rectangle,
+    color: Color,
+    value: bool,
 }
 
-impl Button {
+impl Toggle {
 
     /// Constructor for Button widget.
-    pub fn new(pos: RelativePosition, width: uint, height: uint, color: Color, border: uint) -> Button {
-        Button {
+    pub fn new(pos: RelativePosition,
+               width: uint,
+               height: uint,
+               border: uint,
+               color: Color,
+               value: bool) -> Toggle {
+        let r_color = match value {
+            true => color,
+            false => Color::new(color.r * 0.1f32, color.g * 0.1f32, color.b * 0.1f32, color.a),
+        };
+        Toggle {
             widget_data: widget::Data::new(pos),
-            rect: Rectangle::new(pos, width, height, color, border),
+            rect: Rectangle::new(pos, width, height, r_color, border),
+            color: color,
+            value: value,
         }
     }
 
 }
 
-impl Default for Button {
+impl Default for Toggle {
 
     /// Default constructor for Button widget.
-    fn default() -> Button {
-        Button {
+    fn default() -> Toggle {
+        Toggle {
             widget_data: Default::default(),
             rect: Default::default(),
+            color: Default::default(),
+            value: false,
         }
     }
 
 }
 
-impl Widget for Button {
+impl Widget for Toggle {
 
     impl_get_widget_data!(widget_data)
 
@@ -79,7 +94,13 @@ impl Widget for Button {
     fn mouse_release_update_draw_state(&mut self, args: &MouseReleaseArgs) {
         match (args.button, self.get_draw_state()) {
             (mouse::Left, Clicked) => {
-                // TRIGGER EVENT HERE.
+                // Toggle value.
+                self.value = if self.value == true { false } else { true };
+                // Toggle rectangle color.
+                self.rect.color = match self.value {
+                    true => self.color,
+                    false => Color::new(self.color.r * 0.1f32, self.color.g * 0.1f32, self.color.b * 0.1f32, self.color.a),
+                };
                 self.set_draw_state(Highlighted);
             },
             _ => (),

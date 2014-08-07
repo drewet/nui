@@ -23,7 +23,6 @@ use graphics::{
     AddColor,
     Draw,
 };
-//use piston::mouse;
 use point::Point;
 use color::Color;
 use std::default::Default;
@@ -34,7 +33,7 @@ pub struct Rectangle {
     widget_data: widget::Data,
     pub width: uint,
     pub height: uint,
-    color: Color,
+    pub color: Color,
     border: uint,
 }
 
