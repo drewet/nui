@@ -37,7 +37,7 @@ pub struct Slider<T> {
     last_pos: Point<int>,
 }
 
-impl<T: Num + FromPrimitive + ToPrimitive> Slider<T> {
+impl<T: Num + Copy + FromPrimitive + ToPrimitive> Slider<T> {
 
     /// Constructor for a Slider widget.
     pub fn new(pos: RelativePosition,
@@ -48,19 +48,40 @@ impl<T: Num + FromPrimitive + ToPrimitive> Slider<T> {
                min: T,
                max: T,
                value: T) -> Slider<T> {
+        let perc = Slider::percentage(value, min, max);
+        let slider_rect = match width >= height {
+            true => { // Horizontal Slider...
+                Rectangle::new(Relative(Point::new(border as int, border as int, 0)),
+                               ((width - 2u * border) as f32 * perc) as uint,
+                               height - 2u * border, color, 0u)
+            },
+            false => { // Vertical Slider...
+                let perc_alt = ::std::num::abs(perc - 1f32);
+                let y = border as int + (perc_alt * (height - 2u * border) as f32) as int;
+                Rectangle::new(Relative(Point::new(border as int, y, 0)),
+                               width - 2u * border,
+                               ((height - 2u * border) as f32 * perc) as uint,
+                               color, 0u)
+            },
+        };
         Slider {
             widget_data: widget::Data::new(pos),
             frame: Rectangle::new(Relative(Point::new(0, 0, 0)), width, height, Color::black(), 0u),
-            rect: Rectangle::new(Relative(Point::new(border as int, border as int, 0)),
-                                 width - 2u * border,
-                                 height - 2u * border,
-                                 color, 0u),
+            rect: slider_rect,
             border: border,
             min: min,
             max: max,
             value: value,
             last_pos: Default::default(),
         }
+    }
+
+    /// Get value percentage between max and min.
+    fn percentage(value: T, min: T, max: T) -> f32 {
+        let v = value.to_f32().unwrap();
+        let mn = min.to_f32().unwrap();
+        let mx = max.to_f32().unwrap();
+        (v - mn) / (mx - mn)
     }
 
     /// Adjust the slider to the given point.
@@ -100,7 +121,7 @@ impl<T: Num + FromPrimitive + ToPrimitive> Slider<T> {
 
 }
 
-impl<T: Num + FromPrimitive + ToPrimitive> Widget for Slider<T> {
+impl<T: Num + Copy + FromPrimitive + ToPrimitive> Widget for Slider<T> {
 
     impl_get_widget_data!(widget_data)
 
