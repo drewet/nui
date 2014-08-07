@@ -14,10 +14,6 @@ use widget::{
     Normal,
 };
 use piston::{
-    GameWindow,
-    MousePressArgs,
-    MouseReleaseArgs,
-    MouseMoveArgs,
     RenderArgs,
 };
 use opengl_graphics::Gl;
@@ -27,7 +23,7 @@ use graphics::{
     AddColor,
     Draw,
 };
-use piston::mouse;
+//use piston::mouse;
 use point::Point;
 use color::Color;
 use std::default::Default;

@@ -6,10 +6,7 @@
 //!
 
 use piston::{
-    GameWindow,
-    MousePressArgs,
     MouseReleaseArgs,
-    MouseMoveArgs,
 };
 use piston::mouse;
 use widget;
@@ -17,7 +14,6 @@ use widget::{
     Widget,
     RelativePosition,
     Highlighted,
-    Normal,
     Clicked,
 };
 use std::default::Default;

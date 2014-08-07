@@ -7,7 +7,6 @@
 
 use widget;
 use widget::{
-    DrawState,
     Clicked,
     Highlighted,
     Normal,

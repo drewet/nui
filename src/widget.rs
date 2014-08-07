@@ -7,7 +7,6 @@
 
 use piston::{
     Game,
-    GameWindow,
     RenderArgs,
     UpdateArgs,
     KeyPressArgs,
