@@ -26,9 +26,6 @@ use piston::{
     GameIteratorSettings,
     RenderArgs,
     Render,
-    MousePress,
-    MouseRelease,
-    MouseMove,
 };
 use nui::{
     Widget,
@@ -79,19 +76,11 @@ fn main() {
 fn handle_event(event: &mut GameEvent,
                 canvas: &mut Canvas,
                 gl: &mut Gl) {
+    canvas.event(event);
     match *event {
         Render(ref mut args) => {
             draw_background(args, gl);
             canvas.draw(args, gl)
-        },
-        MousePress(ref args) => {
-            canvas.mouse_press(args)
-        },
-        MouseRelease(ref args) => {
-            canvas.mouse_release(args)
-        },
-        MouseMove(ref args) => {
-            canvas.mouse_move(args)
         },
         _ => (),
     }

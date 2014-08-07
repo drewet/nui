@@ -7,6 +7,7 @@
 
 use piston::{
     Game,
+    GameEvent,
     RenderArgs,
     UpdateArgs,
     KeyPressArgs,
@@ -16,6 +17,15 @@ use piston::{
     MouseMoveArgs,
     MouseRelativeMoveArgs,
     MouseScrollArgs,
+    Render,
+    Update,
+    KeyPress,
+    KeyRelease,
+    MousePress,
+    MouseRelease,
+    MouseMove,
+    MouseRelativeMove,
+    MouseScroll,
 };
 use piston::mouse;
 use opengl_graphics::Gl;
@@ -87,7 +97,7 @@ impl Default for Data {
     /// Default constructor for Widget Data.
     fn default() -> Data {
         Data {
-            rel_pos: Down(20u),
+            rel_pos: Down(0u),
             abs_pos: Default::default(),
             draw_state: Normal,
             visible: true,
@@ -105,7 +115,7 @@ pub trait Widget {
     fn get_widget_data_mut(&mut self) -> &mut Data;
 
     /// Return the dimensions as a tuple holding width and height.
-    fn get_dimensions(&self) -> (uint, uint);
+    fn get_dimensions(&self) -> (uint, uint) { (0u, 0u) }
 
     /// Return all children widgets.
     fn get_children(&self) -> Vec<&Widget> { Vec::new() }
@@ -185,6 +195,21 @@ pub trait Widget {
         match (args.button, self.get_draw_state()) {
             (mouse::Left, Highlighted) => true,
             _ => false,
+        }
+    }
+
+    /// Handle a Piston Game event.
+    fn event(&mut self, event: &mut GameEvent) {
+        match *event {
+            Render(_) => (), // Call 'draw' manually.
+            Update(ref mut args) => self.update(args),
+            KeyPress(ref args) => self.key_press(args),
+            KeyRelease(ref args) => self.key_release(args),
+            MousePress(ref args) => self.mouse_press(args),
+            MouseRelease(ref args) => self.mouse_release(args),
+            MouseMove(ref args) => self.mouse_move(args),
+            MouseRelativeMove(ref args) => self.mouse_relative_move(args),
+            MouseScroll(ref args) => self.mouse_scroll(args),
         }
     }
 

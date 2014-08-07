@@ -43,8 +43,8 @@ impl<T: Num + FromPrimitive + ToPrimitive> Slider<T> {
     pub fn new(pos: RelativePosition,
                width: uint,
                height: uint,
-               color: Color,
                border: uint,
+               color: Color,
                min: T,
                max: T,
                value: T) -> Slider<T> {

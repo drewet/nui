@@ -1,3 +1,6 @@
+
+#![macro_escape]
+
 //!
 //!  macro.rs
 //!
@@ -6,6 +9,7 @@
 //!
 
 /// Simplification of the `get_widget_data` methods from the Widget trait.
+#[macro_export]
 macro_rules! impl_get_widget_data(
     ($data:ident) => (
         /// Return a reference to the widget data.
