@@ -5,7 +5,7 @@ use nui::{
     Slider,
     Point,
     Widget,
-    Right,
+    Down,
     Color,
     WidgetData,
 };
@@ -21,7 +21,7 @@ impl Canvas {
     /// Create a new UI Widget Canvas.
     pub fn new() -> Canvas {
         let button: Button = Default::default();
-        let slider = Slider::new(Right(100u), // Relative Position to previous child.
+        let slider = Slider::new(Down(100u), // Relative Position to previous child.
                                      40u, // Width
                                      200u, // Height
                                      3u, // Border

@@ -50,7 +50,7 @@ impl<T: Num + FromPrimitive + ToPrimitive> Slider<T> {
                value: T) -> Slider<T> {
         Slider {
             widget_data: widget::Data::new(pos),
-            frame: Rectangle::new(pos, width, height, Color::black(), 0u),
+            frame: Rectangle::new(Relative(Point::new(0, 0, 0)), width, height, Color::black(), 0u),
             rect: Rectangle::new(Relative(Point::new(border as int, border as int, 0)),
                                  width - 2u * border,
                                  height - 2u * border,
