@@ -158,22 +158,22 @@ pub trait Widget {
         }
     }
 
-    /// Get position of the widget.
+    /// Get relative position of the widget.
     fn get_rel_pos(&self) -> RelativePosition { self.get_widget_data().rel_pos }
 
-    /// Set position of the widget.
+    /// Set relative position of the widget.
     fn set_rel_pos(&mut self, pos: RelativePosition) { self.get_widget_data_mut().rel_pos = pos; }
 
     /// Return the absolute position.
     fn get_abs_pos(&self) -> Point<int> { self.get_widget_data().abs_pos }
 
-    /// Set absolute position.
+    /// Set the absolute position.
     fn set_abs_pos(&mut self, pos: Point<int>) {
         self.get_widget_data_mut().abs_pos = pos;
         self.set_abs_pos_children(pos);
     }
 
-    /// Set absolute position of children.
+    /// Set the absolute position for each child using their relative positions.
     fn set_abs_pos_children(&mut self, pos: Point<int>) {
         let mut prev = pos;
         self.get_children_mut().mut_iter().all(|child| {
