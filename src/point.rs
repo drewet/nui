@@ -7,10 +7,12 @@
 
 use std::default::Default;
 
+/// General use 3D spatial point.
+#[deriving(Show, Clone)]
 pub struct Point<T> {
-    x: T,
-    y: T,
-    z: T,
+    pub x: T,
+    pub y: T,
+    pub z: T,
 }
 
 impl<T: Num + Copy> Point<T> {
@@ -37,3 +39,28 @@ impl<T: Num + Copy + Default> Default for Point<T> {
         Point::new(Default::default(), Default::default(), Default::default())
     }
 }
+
+impl<T: Num + Copy> Add<Point<T>, Point<T>> for Point<T> {
+    fn add(&self, rhs: &Point<T>) -> Point<T> {
+        Point::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
+    }
+}
+
+impl<T: Num + Copy> Sub<Point<T>, Point<T>> for Point<T> {
+    fn sub(&self, rhs: &Point<T>) -> Point<T> {
+        Point::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
+    }
+}
+
+impl<T: Num + Copy> Mul<Point<T>, Point<T>> for Point<T> {
+    fn mul(&self, rhs: &Point<T>) -> Point<T> {
+        Point::new(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z)
+    }
+}
+
+impl<T: Num + Copy> Div<Point<T>, Point<T>> for Point<T> {
+    fn div(&self, rhs: &Point<T>) -> Point<T> {
+        Point::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
+    }
+}
+

@@ -6,9 +6,3 @@
 //!
 
 
-
-#[test]
-pub fn test() {
-    println!("canvas Tests!");
-}
-
