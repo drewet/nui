@@ -5,23 +5,44 @@
 //!
 //!
 
+#![feature(phase)]
+
+#[phase(plugin, link)]
+extern crate nui;
 extern crate graphics;
 extern crate piston;
 extern crate sdl2_game_window;
 extern crate opengl_graphics;
-extern crate nui;
 
-use app::App;
+pub use widget = nui::widget;
+use canvas::Canvas;
 use sdl2_game_window::GameWindowSDL2;
+use opengl_graphics::Gl;
 use piston::{
     Game,
+    GameEvent,
     GameWindowSettings,
+    GameIterator,
     GameIteratorSettings,
+    RenderArgs,
+    Render,
+    MousePress,
+    MouseRelease,
+    MouseMove,
+};
+use nui::{
+    Widget,
+};
+use graphics::{
+    Context,
+    AddColor,
+    Draw,
 };
 
-mod app;
+mod canvas;
 
 fn main() {
+
     // Create a SDL2 window.
     let mut window = GameWindowSDL2::new(
         GameWindowSettings {
@@ -38,8 +59,49 @@ fn main() {
         max_frames_per_second: 60
     };
 
-    // Create a new game and run it.
-    let mut app = App::new();
-    app.run(&mut window, &game_iter_settings);
+    // Create GameIterator to begin the event iteration loop.
+    let mut game_iter = GameIterator::new(&mut window, &game_iter_settings);
+    // Create OpenGL instance.
+    let mut gl = Gl::new();
+    // Create UI app.
+    let mut canvas = Canvas::new();
+
+    loop {
+        match game_iter.next() {
+            None => break,
+            Some(mut e) => handle_event(&mut e, &mut canvas, &mut gl),
+        }
+    }
+
+}
+
+/// Match the game event.
+fn handle_event(event: &mut GameEvent,
+                canvas: &mut Canvas,
+                gl: &mut Gl) {
+    match *event {
+        Render(ref mut args) => {
+            draw_background(args, gl);
+            canvas.draw(args, gl)
+        },
+        MousePress(ref args) => {
+            canvas.mouse_press(args)
+        },
+        MouseRelease(ref args) => {
+            canvas.mouse_release(args)
+        },
+        MouseMove(ref args) => {
+            canvas.mouse_move(args)
+        },
+        _ => (),
+    }
+}
+
+/// Draw the window background.
+fn draw_background(args: &RenderArgs, gl: &mut Gl) {
+    // Set up a context to draw into.
+    let context = &Context::abs(args.width as f64, args.height as f64);
+    // Draw the background.
+    context.rgba(0.075,0.05,0.1,1.0).draw(gl);
 }
 
